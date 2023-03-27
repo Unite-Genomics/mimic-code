@@ -14,16 +14,35 @@ If following the tutorials, be sure to download the scripts locally and the MIMI
 
 ```sh
 # clone repo
+# Get the data and put it into a Google Drive shared folder
+wget -r -N -c -np --user <USERNAME> --ask-password https://physionet.org/files/mimiciv/2.2/
+
+# Then download from drive and check file is ~7.1GB
+ls ~/Downloads/mimic-iv-2.2.zip
+
+# Make a project directory
+mkdir ~/mimic
+cd ~/mimic
+mv ~/Downloads/mimic-iv-2.2.zip .
+# takes about 5 minutes
+unzip mimic-iv-2.2.zip
+
+# clone repo
 git clone https://github.com/MIT-LCP/mimic-code.git
-cd mimic-code
-# download data
-wget -r -N -c -np --user <USERNAME> --ask-password https://physionet.org/files/mimiciv/2.0/
-mv physionet.org/files/mimiciv mimiciv && rmdir physionet.org/files && rm physionet.org/robots.txt && rmdir physionet.org
-createdb mimiciv
-psql -d mimiciv -f mimic-iv/buildmimic/postgres/create.sql
-psql -d mimiciv -v ON_ERROR_STOP=1 -v mimic_data_dir=mimiciv/2.0 -f mimic-iv/buildmimic/postgres/load_gz.sql
-psql -d mimiciv -v ON_ERROR_STOP=1 -v mimic_data_dir=mimiciv/2.0 -f mimic-iv/buildmimic/postgres/constraint.sql
-psql -d mimiciv -v ON_ERROR_STOP=1 -v mimic_data_dir=mimiciv/2.0 -f mimic-iv/buildmimic/postgres/index.sql
+cd mimic-code/mimic-iv/buildmimic/postgres
+ln -s ../../../../mimic-iv-2.2 mimiciv
+
+# create empty postgres database
+docker compose up
+
+PGPASSWORD='mimiciv' psql -h db -p 5432 -d mimiciv -U mimiciv -f mimic-iv/buildmimic/postgres/create.sql
+
+# takes about 30 minutes
+PGPASSWORD='mimiciv' psql -h db -p 5432 -d mimiciv -U mimiciv -v ON_ERROR_STOP=1 -v mimic_data_dir=mimiciv -f load_gz.sql
+# takes about 10 minutes
+PGPASSWORD='mimiciv' psql -h db -p 5432 -d mimiciv -U mimiciv -v ON_ERROR_STOP=1 -v mimic_data_dir=mimiciv -f constraint.sql
+# takes about 20 minutes
+PGPASSWORD='mimiciv' psql -h db -p 5432 -d mimiciv -U mimiciv -v ON_ERROR_STOP=1 -v mimic_data_dir=mimiciv -f index.sql
 ```
 
 ## Detailed guide

@@ -26,6 +26,8 @@ SET search_path TO mimiciv_ed;
    as explained in the README file
 */
 
+\cd ed
+
 --------------------------------------------------------
 --  Load Data for Table diagnosis
 --------------------------------------------------------

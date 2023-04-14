@@ -12,6 +12,7 @@ SET CLIENT_ENCODING TO 'utf8';
 -- hosp schema
 \cd hosp
 
+\COPY mimiciv_hosp.patients FROM PROGRAM '7z e -so patients.csv.gz' DELIMITER ',' CSV HEADER NULL '';
 \COPY mimiciv_hosp.admissions FROM PROGRAM '7z e -so admissions.csv.gz' DELIMITER ',' CSV HEADER NULL '';
 \COPY mimiciv_hosp.d_hcpcs FROM PROGRAM '7z e -so d_hcpcs.csv.gz' DELIMITER ',' CSV HEADER NULL '';
 \COPY mimiciv_hosp.diagnoses_icd FROM PROGRAM '7z e -so diagnoses_icd.csv.gz' DELIMITER ',' CSV HEADER NULL '';
@@ -25,7 +26,6 @@ SET CLIENT_ENCODING TO 'utf8';
 \COPY mimiciv_hosp.labevents FROM PROGRAM '7z e -so labevents.csv.gz' DELIMITER ',' CSV HEADER NULL '';
 \COPY mimiciv_hosp.microbiologyevents FROM PROGRAM '7z e -so microbiologyevents.csv.gz' DELIMITER ',' CSV HEADER NULL '';
 \COPY mimiciv_hosp.omr FROM PROGRAM '7z e -so omr.csv.gz' DELIMITER ',' CSV HEADER NULL '';
-\COPY mimiciv_hosp.patients FROM PROGRAM '7z e -so patients.csv.gz' DELIMITER ',' CSV HEADER NULL '';
 \COPY mimiciv_hosp.pharmacy FROM PROGRAM '7z e -so pharmacy.csv.gz' DELIMITER ',' CSV HEADER NULL '';
 \COPY mimiciv_hosp.poe_detail FROM PROGRAM '7z e -so poe_detail.csv.gz' DELIMITER ',' CSV HEADER NULL '';
 \COPY mimiciv_hosp.poe FROM PROGRAM '7z e -so poe.csv.gz' DELIMITER ',' CSV HEADER NULL '';
